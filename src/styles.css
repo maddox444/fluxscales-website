@@ -1,0 +1,326 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Metric-adjusted fallbacks: text renders at near-final size before the
+   webfonts land, so swapping in Anton/Manrope causes no layout shift. */
+@font-face {
+  font-family: "Anton Fallback";
+  src: local("Arial Narrow"), local("Helvetica Neue Condensed"), local("Arial");
+  size-adjust: 108%;
+  ascent-override: 90%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Manrope Fallback";
+  src: local("Helvetica Neue"), local("Arial");
+  size-adjust: 100%;
+  ascent-override: 104%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
+
+/*
+ * Fluxscales design system — pure monochrome.
+ * Display: Anton. Body: Manrope. Labels: JetBrains Mono.
+ */
+
+@theme inline {
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+  --font-display: "Anton", "Anton Fallback", "Arial Narrow", sans-serif;
+  --font-sans: "Manrope", "Manrope Fallback", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-hairline: var(--hairline);
+}
+
+:root {
+  --radius: 0px;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.19 0 0);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.19 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.98 0 0);
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.24 0 0);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.24 0 0);
+  --muted-foreground: oklch(0.68 0 0);
+  --accent: oklch(0.98 0 0);
+  --accent-foreground: oklch(0.145 0 0);
+  --destructive: oklch(0.55 0 0);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.98 0 0);
+  --ink: oklch(0.115 0 0);
+  --paper: oklch(0.985 0 0);
+  --hairline: oklch(1 0 0 / 14%);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-foreground);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@utility skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  background: var(--color-foreground);
+  color: var(--color-background);
+  transform: translateY(-150%);
+  transition: transform 300ms cubic-bezier(0.22, 0.68, 0.16, 1);
+  &:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+@utility marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+  &:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+
+
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Script coverage: Anton and JetBrains Mono ship no Arabic or Cyrillic
+   glyphs, so those locales fall back to faces that do. */
+:lang(ru) .display,
+:lang(uk) .display {
+  font-family: "Oswald", "Anton", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+:lang(ar) .display {
+  font-family: "Noto Kufi Arabic", system-ui, sans-serif;
+  font-weight: 700;
+  text-transform: none;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+:lang(ar) .label-mono {
+  font-family: "Noto Kufi Arabic", system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+
+:lang(ar) body,
+:lang(ar) {
+  font-family: "Noto Kufi Arabic", var(--font-sans);
+}
+
+@utility marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: flux-marquee 28s linear infinite;
+}
+
+@utility link-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.15em;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  &:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes flux-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Motion system ---------- */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  section[id],
+  div[id] {
+    scroll-margin-top: 4rem;
+  }
+}
+
+@utility reveal-base {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 600ms cubic-bezier(0.22, 0.68, 0.16, 1),
+    transform 700ms cubic-bezier(0.22, 0.68, 0.16, 1);
+  will-change: opacity, transform;
+}
+
+@utility reveal-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@utility press {
+  transition:
+    transform 220ms cubic-bezier(0.22, 0.68, 0.16, 1),
+    background-color 350ms ease-out,
+    color 350ms ease-out,
+    box-shadow 350ms ease-out;
+  &:active {
+    transform: scale(0.975);
+  }
+}
+
+@utility lift {
+  transition:
+    transform 450ms cubic-bezier(0.22, 0.68, 0.16, 1),
+    box-shadow 450ms ease-out;
+  &:hover {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: 0 18px 45px -25px oklch(1 0 0 / 30%);
+  }
+}
+
+@utility boot-fade {
+  animation: flux-boot-fade 700ms cubic-bezier(0.22, 0.68, 0.16, 1) both;
+}
+
+@utility boot-nav {
+  animation: flux-boot-nav 650ms cubic-bezier(0.22, 0.68, 0.16, 1) 120ms both;
+}
+
+@keyframes flux-boot-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes flux-boot-nav {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-base {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
